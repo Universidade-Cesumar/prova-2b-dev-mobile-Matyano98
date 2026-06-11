@@ -48,20 +48,16 @@ export default function App() {
     } catch (erro) {
       // Mostra o erro no terminal caso a requisição falhe
       console.error('Erro ao buscar materiais:', erro);
-    
-        } finally {
+    } finally {
       // Desativa o indicador mesmo que aconteça algum erro
       setCarregando(false);
     }
   }
 
-      // Executa a busca uma vez quando o aplicativo é aberto
-      useEffect(() => {
-        buscarMateriais();
-      }, []);  
-
-  // As funções de requisição serão adicionadas aqui nas próximas etapas
-
+  // Executa a busca uma vez quando o aplicativo é aberto
+  useEffect(() => {
+    buscarMateriais();
+  }, []);
 
   // Define como cada material será exibido dentro da FlatList
   function renderizarMaterial({ item }) {
@@ -124,14 +120,14 @@ export default function App() {
       <Text style={styles.listTitle}>
         Materiais cadastrados
       </Text>
- {carregando ? (
-        // Aparece enquanto a API está respondendo
+
+      {/* Verifica se a API ainda está carregando */}
+      {carregando ? (
         <ActivityIndicator
           size="large"
           style={styles.loading}
         />
       ) : (
-        // Aparece quando a busca dos materiais terminar
         <FlatList
           testID="lista-materiais"
           data={materiais}
@@ -146,6 +142,9 @@ export default function App() {
         />
       )}
 
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -242,8 +241,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
+  // Posiciona o indicador de carregamento
   loading: {
     marginTop: 20,
   },
-
 });
