@@ -3,8 +3,11 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList, Activity
 
 export default function App() {
   // --- Estados da Aplicação (Os alunos implementarão aqui) ---
+  // Armazena o nome digitado no formulário
   const [nome, setNome] = useState('');
+   // Armazena a quantidade digitada no formulário
   const [quantidade, setQuantidade] = useState('');
+   // Armazena a lista de materiais recebida da API
   const [materiais, setMateriais] = useState([]);
 
   // --- Funções de Requisição e Efeitos (Os alunos implementarão aqui) ---
@@ -21,12 +24,22 @@ export default function App() {
 
       {/* Os alunos vão construir os componentes visuais das Sprints aqui dentro */}
       
+      {/* Campo de nome do material */}
         <TextInput
         testID="input-nome"
         style={styles.input}
         placeholder="Nome do material"
         value={nome}
         onChangeText={setNome}
+
+      {/* Campo de quantidade */}
+      /><TextInput
+        testID="input-quantidade"
+        style={styles.input}
+        placeholder="Quantidade"
+        value={quantidade}
+        onChangeText={setQuantidade}
+      keyboardType="numeric"
 />
       
     </View>
