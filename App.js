@@ -21,6 +21,14 @@ export default function App() {
 
       {/* Os alunos vão construir os componentes visuais das Sprints aqui dentro */}
       
+        <TextInput
+        testID="input-nome"
+        style={styles.input}
+        placeholder="Nome do material"
+        value={nome}
+        onChangeText={setNome}
+/>
+      
     </View>
   );
 }
@@ -45,5 +53,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20, // Dá um espaçamento confortável entre as linhas do parágrafo
     marginBottom: 30, // Margem inferior para afastar o texto dos futuros inputs dos alunos
-  }
+  },
+  input: {
+    width: '100%',
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    marginBottom: 12,
+    backgroundColor: '#fff',
+},
 });
