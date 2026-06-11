@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 
 // Endpoint usado para buscar e cadastrar materiais
@@ -22,9 +23,15 @@ export default function App() {
   // Armazena a lista de materiais recebida da API
   const [materiais, setMateriais] = useState([]);
 
+  // Controla se os materiais ainda estão sendo buscados
+  const [carregando, setCarregando] = useState(true);
+
   // Busca todos os materiais cadastrados na MockAPI
   async function buscarMateriais() {
     try {
+      // Ativa o indicador antes de iniciar a requisição
+      setCarregando(true);
+
       // Realiza uma requisição GET para o endpoint
       const resposta = await fetch(API_URL);
 
@@ -41,6 +48,10 @@ export default function App() {
     } catch (erro) {
       // Mostra o erro no terminal caso a requisição falhe
       console.error('Erro ao buscar materiais:', erro);
+    
+        } finally {
+      // Desativa o indicador mesmo que aconteça algum erro
+      setCarregando(false);
     }
   }
 
@@ -113,24 +124,28 @@ export default function App() {
       <Text style={styles.listTitle}>
         Materiais cadastrados
       </Text>
+ {carregando ? (
+        // Aparece enquanto a API está respondendo
+        <ActivityIndicator
+          size="large"
+          style={styles.loading}
+        />
+      ) : (
+        // Aparece quando a busca dos materiais terminar
+        <FlatList
+          testID="lista-materiais"
+          data={materiais}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={renderizarMaterial}
+          contentContainerStyle={styles.listContent}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>
+              Nenhum material cadastrado.
+            </Text>
+          }
+        />
+      )}
 
-      {/* A FlatList exibirá os materiais armazenados no estado */}
-      <FlatList
-        testID="lista-materiais"
-        data={materiais}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={renderizarMaterial}
-        contentContainerStyle={styles.listContent}
-        ListEmptyComponent={
-          <Text style={styles.emptyText}>
-            Nenhum material cadastrado.
-          </Text>
-        }
-      />
-
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -224,6 +239,10 @@ const styles = StyleSheet.create({
   emptyText: {
     textAlign: 'center',
     color: '#777',
+    marginTop: 20,
+  },
+
+  loading: {
     marginTop: 20,
   },
 
