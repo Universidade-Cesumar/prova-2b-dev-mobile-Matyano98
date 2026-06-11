@@ -22,6 +22,33 @@ export default function App() {
   // Armazena a lista de materiais recebida da API
   const [materiais, setMateriais] = useState([]);
 
+  // Busca todos os materiais cadastrados na MockAPI
+  async function buscarMateriais() {
+    try {
+      // Realiza uma requisição GET para o endpoint
+      const resposta = await fetch(API_URL);
+
+      // Verifica se a API respondeu corretamente
+      if (!resposta.ok) {
+        throw new Error('Erro ao buscar os materiais.');
+      }
+
+      // Converte a resposta da API para JSON
+      const dados = await resposta.json();
+
+      // Guarda os materiais no estado da aplicação
+      setMateriais(dados);
+    } catch (erro) {
+      // Mostra o erro no terminal caso a requisição falhe
+      console.error('Erro ao buscar materiais:', erro);
+    }
+  }
+
+      // Executa a busca uma vez quando o aplicativo é aberto
+      useEffect(() => {
+        buscarMateriais();
+      }, []);  
+
   // As funções de requisição serão adicionadas aqui nas próximas etapas
 
 
