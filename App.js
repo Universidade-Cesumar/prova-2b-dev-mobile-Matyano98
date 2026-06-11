@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Alert,
+
 } from 'react-native';
 
 // Endpoint usado para buscar e cadastrar materiais
@@ -16,13 +18,10 @@ const API_URL =
 export default function App() {
   // Armazena o nome digitado no formulário
   const [nome, setNome] = useState('');
-
   // Armazena a quantidade digitada no formulário
   const [quantidade, setQuantidade] = useState('');
-
   // Armazena a lista de materiais recebida da API
   const [materiais, setMateriais] = useState([]);
-
   // Controla se os materiais ainda estão sendo buscados
   const [carregando, setCarregando] = useState(true);
 
@@ -54,50 +53,99 @@ export default function App() {
     }
   }
 
-        // Envia um novo material para a MockAPI
-  async function cadastrarMaterial() {
-    // Monta o objeto que será enviado para a API
-    const novoMaterial = {
-      nome: nome,
-      quantidade: Number(quantidade),
-    };
+ // Envia o novo material para a MockAPI
+async function cadastrarMaterial() {
+  // Confirma no console que o botão chamou a função
+  console.log('Botão de cadastro pressionado.');
 
-    try {
-      // Envia os dados usando o método POST
-      const resposta = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(novoMaterial),
-      });
+  // Remove espaços desnecessários do nome
+  const nomeLimpo = nome.trim();
 
-      // Verifica se o cadastro foi realizado corretamente
-      if (!resposta.ok) {
-        throw new Error('Erro ao cadastrar o material.');
-      }
+  // Converte a quantidade digitada para número
+  const quantidadeNumerica = Number(quantidade);
 
-      // Converte a resposta da API para JSON
-      const materialCadastrado = await resposta.json();
-
-      // Adiciona o novo material ao final da lista atual
-      setMateriais((listaAtual) => [
-        ...listaAtual,
-        materialCadastrado,
-      ]);
-
-      // Limpa os campos depois do cadastro
-      setNome('');
-      setQuantidade('');
-    } catch (erro) {
-      // Mostra o erro no terminal caso o cadastro falhe
-      console.error('Erro ao cadastrar material:', erro);
-    }
+  // Impede o envio caso algum campo esteja vazio
+  if (!nomeLimpo || !quantidade) {
+    Alert.alert(
+      'Atenção',
+      'Preencha o nome e a quantidade.'
+    );
+    return;
   }
-  // Executa a busca uma vez quando o aplicativo é aberto
-  useEffect(() => {
-    buscarMateriais();
-  }, []);
+
+  // Impede o envio de quantidade inválida
+  if (
+    Number.isNaN(quantidadeNumerica) ||
+    quantidadeNumerica <= 0
+  ) {
+    Alert.alert(
+      'Atenção',
+      'Digite uma quantidade maior que zero.'
+    );
+    return;
+  }
+
+  // Objeto JSON que será enviado para a API
+  const novoMaterial = {
+    nome: nomeLimpo,
+    quantidade: quantidadeNumerica,
+  };
+
+  try {
+    console.log('Material enviado:', novoMaterial);
+
+    // Envia uma requisição POST para a MockAPI
+    const resposta = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(novoMaterial),
+    });
+
+    // Exibe o código da resposta para ajudar no diagnóstico
+    console.log('Status do POST:', resposta.status);
+
+    // Verifica se a API aceitou o cadastro
+    if (!resposta.ok) {
+      const mensagemErro = await resposta.text();
+
+      throw new Error(
+        `Erro ${resposta.status}: ${mensagemErro}`
+      );
+    }
+
+    // Converte a resposta da API para JSON
+    const materialCadastrado = await resposta.json();
+
+    console.log(
+      'Material cadastrado com sucesso:',
+      materialCadastrado
+    );
+
+    // Busca novamente os dados diretamente da MockAPI
+    await buscarMateriais();
+
+    // Limpa os campos depois do cadastro
+    setNome('');
+    setQuantidade('');
+
+    Alert.alert(
+      'Sucesso',
+      'Material cadastrado com sucesso.'
+    );
+  } catch (erro) {
+    console.error(
+      'Erro ao cadastrar material:',
+      erro
+    );
+
+    Alert.alert(
+      'Erro',
+      'Não foi possível cadastrar o material.'
+    );
+  }
+}
 
   // Define como cada material será exibido dentro da FlatList
   function renderizarMaterial({ item }) {
@@ -150,6 +198,7 @@ export default function App() {
       <TouchableOpacity
         testID="btn-cadastrar"
         style={styles.button}
+        onPress={cadastrarMaterial}
       >
         <Text style={styles.buttonText}>
           Cadastrar material
