@@ -40,10 +40,21 @@ export default function App() {
         value={quantidade}
         onChangeText={setQuantidade}
       keyboardType="numeric"
+
+      {/* Botão obrigatório da Sprint 1 */}
+    <TouchableOpacity
+      testID="btn-cadastrar"
+      style={styles.button}
+    >
+      <Text style={styles.buttonText}>
+        Cadastrar material
+      </Text>
+    </TouchableOpacity>
+  </View>
+);
 />
       
     </View>
-  );
 }
 
 const styles = StyleSheet.create({
@@ -76,5 +87,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginBottom: 12,
     backgroundColor: '#fff',
-},
+     // Define a aparência do botão de cadastro
+  button: {
+    width: '100%',
+    height: 48,
+    backgroundColor: '#2563eb',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+
+  // Define a aparência do texto dentro do botão
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
+
