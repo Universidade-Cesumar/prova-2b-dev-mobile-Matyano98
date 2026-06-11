@@ -8,6 +8,10 @@ import {
   FlatList,
 } from 'react-native';
 
+// Endpoint usado para buscar e cadastrar materiais
+const API_URL =
+  'https://6a2a0285f59cb8f65f1df32a.mockapi.io/api/v1/materiais';
+
 export default function App() {
   // Armazena o nome digitado no formulário
   const [nome, setNome] = useState('');
