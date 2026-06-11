@@ -54,6 +54,46 @@ export default function App() {
     }
   }
 
+        // Envia um novo material para a MockAPI
+  async function cadastrarMaterial() {
+    // Monta o objeto que será enviado para a API
+    const novoMaterial = {
+      nome: nome,
+      quantidade: Number(quantidade),
+    };
+
+    try {
+      // Envia os dados usando o método POST
+      const resposta = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(novoMaterial),
+      });
+
+      // Verifica se o cadastro foi realizado corretamente
+      if (!resposta.ok) {
+        throw new Error('Erro ao cadastrar o material.');
+      }
+
+      // Converte a resposta da API para JSON
+      const materialCadastrado = await resposta.json();
+
+      // Adiciona o novo material ao final da lista atual
+      setMateriais((listaAtual) => [
+        ...listaAtual,
+        materialCadastrado,
+      ]);
+
+      // Limpa os campos depois do cadastro
+      setNome('');
+      setQuantidade('');
+    } catch (erro) {
+      // Mostra o erro no terminal caso o cadastro falhe
+      console.error('Erro ao cadastrar material:', erro);
+    }
+  }
   // Executa a busca uma vez quando o aplicativo é aberto
   useEffect(() => {
     buscarMateriais();
@@ -107,7 +147,6 @@ export default function App() {
         keyboardType="numeric"
       />
 
-      {/* Botão obrigatório da Sprint 1 */}
       <TouchableOpacity
         testID="btn-cadastrar"
         style={styles.button}
