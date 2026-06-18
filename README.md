@@ -26,6 +26,34 @@ Na primeira sprint foram desenvolvidas as seguintes funcionalidades:
 * Bloqueio do botão enquanto o cadastro está sendo realizado;
 * Mensagens de sucesso e erro para o usuário.
 
+## Sprint 2 — Regras de Negócio e Saídas no Mobile
+
+Na segunda sprint foram implementadas as funcionalidades de baixa rápida de estoque e exclusão de materiais diretamente na lista do inventário.
+
+O objetivo desta etapa foi permitir que o usuário informe uma quantidade a retirar de cada material e que o sistema impeça operações inválidas, como retiradas maiores que o estoque disponível, valores negativos ou iguais a zero.
+
+### Funcionalidades implementadas
+
+- Campo de retirada dentro de cada material da lista;
+- Botão para realizar baixa de estoque;
+- Botão para excluir material;
+- Validação de retirada de estoque;
+- Bloqueio de retirada maior que o estoque disponível;
+- Bloqueio de retirada com quantidade zero;
+- Bloqueio de retirada com quantidade negativa;
+- Atualização da quantidade na MockAPI usando `PUT`;
+- Exclusão permanente de materiais na MockAPI usando `DELETE`;
+- Atualização local da interface após baixa ou exclusão.
+
+### Regra de negócio da retirada
+
+A Sprint 2 exige uma função pura chamada `validarRetirada`.
+
+Ela foi criada no arquivo:
+
+```txt
+src/utils/validacoes.js
+
 ## Tecnologias utilizadas
 
 * React Native;
