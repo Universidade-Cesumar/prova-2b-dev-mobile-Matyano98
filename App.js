@@ -452,49 +452,67 @@ function renderizarMaterial({ item }) {
 }
 
 const styles = StyleSheet.create({
+   // Fundo geral da aplicação
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f4f7fb',
     paddingTop: 50,
     paddingHorizontal: 20,
   },
 
+  // Título principal do sistema
   title: {
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 10,
-    color: '#333',
+    marginBottom: 8,
+    color: '#1f2937',
   },
 
+  // Descrição abaixo do título
   description: {
     fontSize: 14,
-    color: '#666',
+    color: '#6b7280',
     textAlign: 'center',
-    lineHeight: 20,
-    marginBottom: 30,
+    lineHeight: 21,
+    marginBottom: 24,
   },
 
+  // Campo padrão dos formulários
   input: {
     width: '100%',
-    height: 48,
+    height: 50,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 12,
+    borderColor: '#d1d5db',
+    borderRadius: 10,
+    paddingHorizontal: 14,
     marginBottom: 12,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
+    fontSize: 15,
+    color: '#1f2937',
   },
 
-  // Aparência principal do botão
+  // Botão principal de cadastro
   button: {
     width: '100%',
-    height: 48,
+    height: 50,
     backgroundColor: '#2563eb',
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
+
+    // Sombra para Android
+    elevation: 3,
+
+    // Sombra para Web/iOS
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 4,
   },
 
   // Deixa o botão mais claro durante o cadastro
@@ -502,22 +520,22 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
 
-  // Aparência do texto dentro do botão
+  // Texto do botão principal
   buttonText: {
-    color: '#fff',
+    color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
   },
 
-  // Título exibido acima da lista
+  // Título da lista de materiais
   listTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
+    color: '#1f2937',
+    marginBottom: 12,
   },
 
-  // Permite que a lista ocupe o restante da tela
+  // Área onde a FlatList fica posicionada
   listWrapper: {
     flex: 1,
   },
@@ -527,78 +545,98 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
 
-  // Card utilizado para exibir cada material
+  // ===== NOVO VISUAL: CARD DOS MATERIAIS =====
+
+  // Card individual de cada material
   materialCard: {
-    backgroundColor: '#f3f4f6',
-    borderRadius: 8,
-    padding: 14,
-    marginBottom: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+
+    // Sombra para Android
+    elevation: 2,
+
+    // Sombra para Web/iOS
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 5,
   },
 
   // Nome do material dentro do card
   materialNome: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#111827',
+    marginBottom: 6,
   },
 
-  // Quantidade do material dentro do card
+  // Quantidade atual do material
   materialQuantidade: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 4,
+    fontSize: 15,
+    color: '#374151',
+    marginBottom: 8,
   },
 
   // Campo usado dentro de cada card para informar a quantidade da baixa
-inputRetirada: {
-  height: 42,
-  borderWidth: 1,
-  borderColor: '#ccc',
-  borderRadius: 8,
-  paddingHorizontal: 10,
-  marginTop: 10,
-  backgroundColor: '#fff',
-},
+  inputRetirada: {
+    height: 44,
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    marginTop: 8,
+    backgroundColor: '#f9fafb',
+    fontSize: 14,
+    color: '#1f2937',
+  },
 
-// Organiza os botões de baixa e exclusão lado a lado
-actionContainer: {
-  flexDirection: 'row',
-  gap: 10,
-  marginTop: 10,
-},
+  // Organiza os botões de baixa e exclusão lado a lado
+  actionContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 12,
+  },
 
-// Botão usado para confirmar a baixa de estoque
-baixarButton: {
-  flex: 1,
-  height: 42,
-  backgroundColor: '#16a34a',
-  borderRadius: 8,
-  alignItems: 'center',
-  justifyContent: 'center',
-},
+  // Botão usado para confirmar a baixa de estoque
+  baixarButton: {
+    flex: 1,
+    height: 44,
+    backgroundColor: '#16a34a',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
-// Botão usado para excluir um material
-excluirButton: {
-  flex: 1,
-  height: 42,
-  backgroundColor: '#dc2626',
-  borderRadius: 8,
-  alignItems: 'center',
-  justifyContent: 'center',
-},
+  // Botão usado para excluir um material
+  excluirButton: {
+    flex: 1,
+    height: 44,
+    backgroundColor: '#dc2626',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
-// Texto dos botões de ação
-actionButtonText: {
-  color: '#fff',
-  fontSize: 14,
-  fontWeight: 'bold',
-},
+  // Texto dos botões de baixa e exclusão
+  actionButtonText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
 
   // Mensagem apresentada quando a lista está vazia
   emptyText: {
     textAlign: 'center',
-    color: '#777',
+    color: '#6b7280',
     marginTop: 20,
+    fontSize: 15,
   },
 
   // Posiciona o indicador de carregamento
