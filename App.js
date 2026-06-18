@@ -256,6 +256,51 @@ async function baixarMaterial(item) {
   }
 }
 
+
+// Remove um material da MockAPI e da lista local
+async function excluirMaterial(item) {
+  try {
+    // Envia a requisição DELETE para remover o item pelo ID
+    const resposta = await fetch(`${API_URL}/${item.id}`, {
+      method: 'DELETE',
+    });
+
+    // Verifica se a API aceitou a exclusão
+    if (!resposta.ok) {
+      throw new Error('Erro ao excluir o material.');
+    }
+
+    // Remove o material excluído da lista exibida na tela
+    setMateriais((listaAtual) =>
+      listaAtual.filter((material) => material.id !== item.id)
+    );
+
+    // Limpa também o campo de retirada relacionado ao item excluído
+    setRetiradas((retiradasAtuais) => {
+      const novasRetiradas = { ...retiradasAtuais };
+
+      delete novasRetiradas[item.id];
+
+      return novasRetiradas;
+    });
+
+    Alert.alert(
+      'Sucesso',
+      'Material excluído com sucesso.'
+    );
+  } catch (erro) {
+    console.error(
+      'Erro ao excluir material:',
+      erro
+    );
+
+    Alert.alert(
+      'Erro',
+      'Não foi possível excluir o material.'
+    );
+  }
+}
+
   // Executa o GET uma vez quando o aplicativo é aberto
   useEffect(() => {
     buscarMateriais();
@@ -304,6 +349,7 @@ function renderizarMaterial({ item }) {
         <TouchableOpacity
           testID="btn-excluir"
           style={styles.excluirButton}
+          onPress={() => excluirMaterial(item)}
         >
           <Text style={styles.actionButtonText}>
             Excluir
