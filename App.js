@@ -11,6 +11,9 @@ import {
   Alert,
 } from 'react-native';
 
+// Importa a função pura que valida se a retirada é permitida
+import { validarRetirada } from './src/utils/validacoes';
+
 // Endpoint usado para buscar e cadastrar materiais
 const API_URL =
   'https://6a2a0285f59cb8f65f1df32a.mockapi.io/api/v1/materiais';
@@ -167,6 +170,92 @@ export default function App() {
     }
   }
 
+  // Realiza a baixa de estoque de um material
+async function baixarMaterial(item) {
+  // Pega a quantidade digitada no campo de retirada daquele item
+  const quantidadeDigitada = retiradas[item.id];
+
+  // Converte o estoque atual e a quantidade retirada para número
+  const estoqueAtual = Number(item.quantidade);
+  const quantidadeRetirada = Number(quantidadeDigitada);
+
+  // Usa a função pura da Sprint 2 para validar a operação
+  const retiradaValida = validarRetirada(
+    estoqueAtual,
+    quantidadeRetirada
+  );
+
+  // Bloqueia retiradas vazias, negativas, zeradas ou maiores que o estoque
+  if (!retiradaValida) {
+    Alert.alert(
+      'Atenção',
+      'Quantidade de retirada inválida ou maior que o estoque disponível.'
+    );
+
+    return;
+  }
+
+  // Calcula o novo saldo do material
+  const novaQuantidade = estoqueAtual - quantidadeRetirada;
+
+  // Monta o objeto atualizado que será enviado para a MockAPI
+  const materialAtualizado = {
+    ...item,
+    quantidade: novaQuantidade,
+  };
+
+  try {
+    // Envia a atualização do material para a MockAPI
+    const resposta = await fetch(`${API_URL}/${item.id}`, {
+      method: 'PUT',
+
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify(materialAtualizado),
+    });
+
+    // Verifica se a API aceitou a atualização
+    if (!resposta.ok) {
+      throw new Error('Erro ao baixar o estoque.');
+    }
+
+    // Recebe o material atualizado pela MockAPI
+    const materialAtualizadoApi = await resposta.json();
+
+    // Atualiza a lista local trocando apenas o item alterado
+    setMateriais((listaAtual) =>
+      listaAtual.map((material) =>
+        material.id === item.id
+          ? materialAtualizadoApi
+          : material
+      )
+    );
+
+    // Limpa o campo de retirada daquele material
+    setRetiradas((retiradasAtuais) => ({
+      ...retiradasAtuais,
+      [item.id]: '',
+    }));
+
+    Alert.alert(
+      'Sucesso',
+      'Baixa de estoque realizada com sucesso.'
+    );
+  } catch (erro) {
+    console.error(
+      'Erro ao baixar estoque:',
+      erro
+    );
+
+    Alert.alert(
+      'Erro',
+      'Não foi possível realizar a baixa de estoque.'
+    );
+  }
+}
+
   // Executa o GET uma vez quando o aplicativo é aberto
   useEffect(() => {
     buscarMateriais();
@@ -204,6 +293,7 @@ function renderizarMaterial({ item }) {
         <TouchableOpacity
           testID="btn-baixar"
           style={styles.baixarButton}
+          onPress={() => baixarMaterial(item)}
         >
           <Text style={styles.actionButtonText}>
             Baixar
