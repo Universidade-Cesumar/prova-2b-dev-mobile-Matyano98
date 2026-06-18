@@ -310,13 +310,29 @@ async function excluirMaterial(item) {
 function renderizarMaterial({ item }) {
   return (
     <View style={styles.materialCard}>
-      <Text style={styles.materialNome}>
-        {item.nome}
-      </Text>
+      {/* ===== NOVO CÓDIGO: CABEÇALHO DO CARD ===== */}
 
-      <Text style={styles.materialQuantidade}>
-        Quantidade: {item.quantidade}
-      </Text>
+      <View style={styles.materialHeader}>
+        <View style={styles.materialInfo}>
+          <Text style={styles.materialNome}>
+            {item.nome}
+          </Text>
+
+          <Text style={styles.materialLabel}>
+            Item cadastrado no inventário
+          </Text>
+        </View>
+
+        <View style={styles.quantidadeBadge}>
+          <Text style={styles.quantidadeBadgeLabel}>
+            Estoque
+          </Text>
+
+          <Text style={styles.quantidadeBadgeValue}>
+            {item.quantidade}
+          </Text>
+        </View>
+      </View>
 
       {/* Campo usado para informar quanto será retirado deste item */}
       <TextInput
@@ -421,7 +437,7 @@ function renderizarMaterial({ item }) {
 </View>
 
       <Text style={styles.listTitle}>
-        Materiais cadastrados
+        Inventário atual
       </Text>
 
       {/* Mostra o indicador enquanto o GET está acontecendo */}
@@ -464,11 +480,11 @@ function renderizarMaterial({ item }) {
 const styles = StyleSheet.create({
    // Fundo geral da aplicação
   container: {
-    flex: 1,
-    backgroundColor: '#f4f7fb',
-    paddingTop: 50,
-    paddingHorizontal: 20,
-  },
+  flex: 1,
+  backgroundColor: '#f4f7fb',
+  paddingTop: 50,
+  paddingHorizontal: 20,
+},
 
   // Título principal do sistema
   title: {
@@ -619,19 +635,64 @@ formSubtitle: {
   },
 
   // Nome do material dentro do card
-  materialNome: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: '#111827',
-    marginBottom: 6,
-  },
+  // Organiza o nome do material e o estoque na mesma linha
+materialHeader: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: 12,
+},
 
-  // Quantidade atual do material
-  materialQuantidade: {
-    fontSize: 15,
-    color: '#374151',
-    marginBottom: 8,
-  },
+// Área de informações principais do material
+materialInfo: {
+  flex: 1,
+  paddingRight: 12,
+},
+
+// Nome do material dentro do card
+materialNome: {
+  fontSize: 17,
+  fontWeight: 'bold',
+  color: '#111827',
+  marginBottom: 4,
+},
+
+// Texto auxiliar abaixo do nome do material
+materialLabel: {
+  fontSize: 12,
+  color: '#6b7280',
+},
+
+// Destaque visual da quantidade em estoque
+quantidadeBadge: {
+  minWidth: 74,
+  paddingVertical: 8,
+  paddingHorizontal: 10,
+  borderRadius: 12,
+  backgroundColor: '#dbeafe',
+  alignItems: 'center',
+},
+
+// Texto pequeno "Estoque"
+quantidadeBadgeLabel: {
+  fontSize: 11,
+  color: '#1d4ed8',
+  fontWeight: '600',
+},
+
+// Valor numérico do estoque
+quantidadeBadgeValue: {
+  fontSize: 18,
+  color: '#1e40af',
+  fontWeight: 'bold',
+},
+
+// Quantidade antiga mantida por segurança
+materialQuantidade: {
+  fontSize: 15,
+  color: '#374151',
+  marginBottom: 8,
+},
 
   // Campo usado dentro de cada card para informar a quantidade da baixa
   inputRetirada: {
