@@ -374,41 +374,51 @@ function renderizarMaterial({ item }) {
         baixas de estoque de forma ágil e segura.
       </Text>
 
-      {/* Campo obrigatório para o nome do material */}
-      <TextInput
-        testID="input-nome"
-        style={styles.input}
-        placeholder="Nome do material"
-        value={nome}
-        onChangeText={setNome}
-      />
+      <View style={styles.formCard}>
+  <Text style={styles.formTitle}>
+    Cadastrar novo material
+  </Text>
 
-      {/* Campo obrigatório para a quantidade */}
-      <TextInput
-        testID="input-quantidade"
-        style={styles.input}
-        placeholder="Quantidade"
-        value={quantidade}
-        onChangeText={setQuantidade}
-        keyboardType="numeric"
-      />
+  <Text style={styles.formSubtitle}>
+    Informe o nome do insumo e a quantidade disponível em estoque.
+  </Text>
 
-      {/* Botão obrigatório conectado à função POST */}
-      <TouchableOpacity
-        testID="btn-cadastrar"
-        style={[
-          styles.button,
-          cadastrando && styles.buttonDisabled,
-        ]}
-        onPress={cadastrarMaterial}
-        disabled={cadastrando}
-      >
-        <Text style={styles.buttonText}>
-          {cadastrando
-            ? 'Cadastrando...'
-            : 'Cadastrar material'}
-        </Text>
-      </TouchableOpacity>
+  {/* Campo obrigatório para o nome do material */}
+  <TextInput
+    testID="input-nome"
+    style={styles.input}
+    placeholder="Nome do material"
+    value={nome}
+    onChangeText={setNome}
+  />
+
+  {/* Campo obrigatório para a quantidade */}
+  <TextInput
+    testID="input-quantidade"
+    style={styles.input}
+    placeholder="Quantidade"
+    value={quantidade}
+    onChangeText={setQuantidade}
+    keyboardType="numeric"
+  />
+
+  {/* Botão obrigatório conectado à função POST */}
+  <TouchableOpacity
+    testID="btn-cadastrar"
+    style={[
+      styles.button,
+      cadastrando && styles.buttonDisabled,
+    ]}
+    onPress={cadastrarMaterial}
+    disabled={cadastrando}
+  >
+    <Text style={styles.buttonText}>
+      {cadastrando
+        ? 'Cadastrando...'
+        : 'Cadastrar material'}
+    </Text>
+  </TouchableOpacity>
+</View>
 
       <Text style={styles.listTitle}>
         Materiais cadastrados
@@ -478,6 +488,45 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
 
+
+// Card que agrupa os campos de cadastro
+formCard: {
+  backgroundColor: '#ffffff',
+  borderRadius: 16,
+  padding: 16,
+  marginBottom: 24,
+  borderWidth: 1,
+  borderColor: '#e5e7eb',
+
+  // Sombra para Android
+  elevation: 3,
+
+  // Sombra para Web/iOS
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.08,
+  shadowRadius: 5,
+},
+
+// Título do formulário
+formTitle: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  color: '#1f2937',
+  marginBottom: 4,
+},
+
+// Texto auxiliar abaixo do título do formulário
+formSubtitle: {
+  fontSize: 13,
+  color: '#6b7280',
+  marginBottom: 14,
+  lineHeight: 18,
+},
+
   // Campo padrão dos formulários
   input: {
     width: '100%',
@@ -500,7 +549,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 24,
+    marginBottom: 0,
 
     // Sombra para Android
     elevation: 3,
