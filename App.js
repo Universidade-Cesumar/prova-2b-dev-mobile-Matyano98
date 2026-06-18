@@ -31,6 +31,10 @@ export default function App() {
   // Impede vários cliques enquanto o material está sendo enviado
   const [cadastrando, setCadastrando] = useState(false);
 
+  // Armazena a quantidade que será retirada de cada material
+  // O id do material será usado como chave do objeto
+  const [retiradas, setRetiradas] = useState({});
+
   // Busca todos os materiais cadastrados na MockAPI
   async function buscarMateriais() {
     try {
@@ -168,20 +172,35 @@ export default function App() {
     buscarMateriais();
   }, []);
 
-  // Define como cada material será exibido na FlatList
-  function renderizarMaterial({ item }) {
-    return (
-      <View style={styles.materialCard}>
-        <Text style={styles.materialNome}>
-          {item.nome}
-        </Text>
+ // Define como cada material será exibido na FlatList
+function renderizarMaterial({ item }) {
+  return (
+    <View style={styles.materialCard}>
+      <Text style={styles.materialNome}>
+        {item.nome}
+      </Text>
 
-        <Text style={styles.materialQuantidade}>
-          Quantidade: {item.quantidade}
-        </Text>
-      </View>
-    );
-  }
+      <Text style={styles.materialQuantidade}>
+        Quantidade: {item.quantidade}
+      </Text>
+
+      {/* Campo usado para informar quanto será retirado deste item */}
+      <TextInput
+        testID="input-retirada"
+        style={styles.inputRetirada}
+        placeholder="Quantidade para retirar"
+        value={retiradas[item.id] || ''}
+        onChangeText={(valor) =>
+          setRetiradas((retiradasAtuais) => ({
+            ...retiradasAtuais,
+            [item.id]: valor,
+          }))
+        }
+        keyboardType="numeric"
+      />
+    </View>
+  );
+}
 
   return (
     <View style={styles.container}>
@@ -371,6 +390,17 @@ const styles = StyleSheet.create({
     color: '#666',
     marginTop: 4,
   },
+
+  // Campo usado dentro de cada card para informar a quantidade da baixa
+inputRetirada: {
+  height: 42,
+  borderWidth: 1,
+  borderColor: '#ccc',
+  borderRadius: 8,
+  paddingHorizontal: 10,
+  marginTop: 10,
+  backgroundColor: '#fff',
+},
 
   // Mensagem apresentada quando a lista está vazia
   emptyText: {
