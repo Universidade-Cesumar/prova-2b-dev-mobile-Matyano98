@@ -198,6 +198,28 @@ function renderizarMaterial({ item }) {
         }
         keyboardType="numeric"
       />
+       {/* Área dos botões de ação do material */}
+      <View style={styles.actionContainer}>
+        {/* Botão obrigatório para confirmar a baixa de estoque */}
+        <TouchableOpacity
+          testID="btn-baixar"
+          style={styles.baixarButton}
+        >
+          <Text style={styles.actionButtonText}>
+            Baixar
+          </Text>
+        </TouchableOpacity>
+
+        {/* Botão obrigatório para excluir o material */}
+        <TouchableOpacity
+          testID="btn-excluir"
+          style={styles.excluirButton}
+        >
+          <Text style={styles.actionButtonText}>
+            Excluir
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -400,6 +422,40 @@ inputRetirada: {
   paddingHorizontal: 10,
   marginTop: 10,
   backgroundColor: '#fff',
+},
+
+// Organiza os botões de baixa e exclusão lado a lado
+actionContainer: {
+  flexDirection: 'row',
+  gap: 10,
+  marginTop: 10,
+},
+
+// Botão usado para confirmar a baixa de estoque
+baixarButton: {
+  flex: 1,
+  height: 42,
+  backgroundColor: '#16a34a',
+  borderRadius: 8,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+
+// Botão usado para excluir um material
+excluirButton: {
+  flex: 1,
+  height: 42,
+  backgroundColor: '#dc2626',
+  borderRadius: 8,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+
+// Texto dos botões de ação
+actionButtonText: {
+  color: '#fff',
+  fontSize: 14,
+  fontWeight: 'bold',
 },
 
   // Mensagem apresentada quando a lista está vazia
