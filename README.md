@@ -76,6 +76,72 @@ Endpoint utilizado:
 
 ```txt
 https://6a2a0285f59cb8f65f1df32a.mockapi.io/api/v1/materiais
+
+Sprint 3 — Finalização, Busca e Alertas Visuais
+
+Na terceira sprint foram realizadas melhorias finais no projeto, incluindo recursos de busca, totalização do inventário e alertas visuais para facilitar a identificação do status dos materiais.
+
+O objetivo desta etapa foi finalizar o sistema, melhorar a experiência do usuário e preparar o projeto para apresentação final.
+
+Funcionalidades implementadas
+Campo de busca para localizar materiais pelo nome;
+Filtro dinâmico da lista de materiais;
+Totalizador de itens exibidos no inventário;
+Alerta visual para materiais com estoque baixo;
+Alerta visual para materiais com estoque zerado;
+Diferenciação visual entre estoque normal, baixo e zerado;
+Melhorias visuais na interface;
+Finalização da documentação do projeto.
+Campo de busca
+
+Foi adicionado um campo de busca com o identificador obrigatório da Sprint 3:
+
+<TextInput testID="input-busca" />
+
+Esse campo permite localizar materiais cadastrados pelo nome.
+
+Totalizador de itens
+
+Também foi adicionado um totalizador com o identificador obrigatório:
+
+<Text testID="total-itens" />
+
+Esse componente mostra a quantidade de materiais exibidos após o filtro de busca.
+
+Alertas visuais de estoque
+
+O sistema agora identifica visualmente o status de cada material:
+
+Situação	Exibição
+Estoque acima de 5 unidades	Estoque
+Estoque entre 1 e 5 unidades	Baixo
+Estoque igual a 0	Zerado
+
+Essa melhoria atende à necessidade de visualizar rapidamente materiais com baixa quantidade ou sem estoque.
+
+Testes da Sprint 3
+
+Para executar os testes automatizados da Sprint 3:
+
+npm test -- sprint3.test.js --runInBand
+
+Resultado esperado:
+
+Test Suites: 1 passed
+Tests: 2 passed
+Status final
+
+O projeto conta com:
+
+Cadastro de materiais;
+Listagem dinâmica via MockAPI;
+Baixa de estoque com validação;
+Exclusão de materiais;
+Busca por nome;
+Totalizador de itens;
+Alertas visuais de estoque;
+Documentação atualizada;
+Commits semânticos seguindo o padrão Conventional Commits.
 ```
 
 ### Métodos implementados
