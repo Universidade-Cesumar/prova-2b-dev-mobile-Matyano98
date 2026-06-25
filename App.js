@@ -38,6 +38,10 @@ export default function App() {
   // O id do material será usado como chave do objeto
   const [retiradas, setRetiradas] = useState({});
 
+  // Armazena o texto digitado no campo de busca
+  const [busca, setBusca] = useState('');
+
+
   // Busca todos os materiais cadastrados na MockAPI
   async function buscarMateriais() {
     try {
@@ -306,6 +310,13 @@ async function excluirMaterial(item) {
     buscarMateriais();
   }, []);
 
+  // Filtra os materiais pelo nome digitado no campo de busca
+const materiaisFiltrados = materiais.filter((material) =>
+  String(material.nome)
+    .toLowerCase()
+    .includes(busca.toLowerCase())
+);
+
  // Define como cada material será exibido na FlatList
 function renderizarMaterial({ item }) {
   return (
@@ -436,9 +447,28 @@ function renderizarMaterial({ item }) {
   </TouchableOpacity>
 </View>
 
-      <Text style={styles.listTitle}>
-        Inventário atual
-      </Text>
+     <View style={styles.dashboardCard}>
+  <Text style={styles.dashboardTitle}>
+    Inventário atual
+  </Text>
+
+  {/* Campo obrigatório da Sprint 3 para buscar materiais */}
+  <TextInput
+    testID="input-busca"
+    style={styles.inputBusca}
+    placeholder="Buscar material pelo nome"
+    value={busca}
+    onChangeText={setBusca}
+  />
+
+  {/* Totalizador obrigatório da Sprint 3 */}
+  <Text
+    testID="total-itens"
+    style={styles.totalItens}
+  >
+    Total de itens exibidos: {materiaisFiltrados.length}
+  </Text>
+</View>
 
       {/* Mostra o indicador enquanto o GET está acontecendo */}
       {carregando && (
@@ -458,7 +488,7 @@ function renderizarMaterial({ item }) {
       >
         <FlatList
           testID="lista-materiais"
-          data={materiais}
+          data={materiaisFiltrados}
           keyExtractor={(item) => String(item.id)}
           renderItem={renderizarMaterial}
           contentContainerStyle={styles.listContent}
@@ -593,12 +623,55 @@ formSubtitle: {
   },
 
   // Título da lista de materiais
-  listTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#1f2937',
-    marginBottom: 12,
+  // Card que organiza o campo de busca e o totalizador
+dashboardCard: {
+  backgroundColor: '#ffffff',
+  borderRadius: 16,
+  padding: 16,
+  marginBottom: 18,
+  borderWidth: 1,
+  borderColor: '#e5e7eb',
+
+  elevation: 2,
+
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
   },
+  shadowOpacity: 0.08,
+  shadowRadius: 5,
+},
+
+// Título da área de inventário
+dashboardTitle: {
+  fontSize: 20,
+  fontWeight: 'bold',
+  color: '#1f2937',
+  marginBottom: 12,
+},
+
+// Campo de busca da Sprint 3
+inputBusca: {
+  width: '100%',
+  height: 46,
+  borderWidth: 1,
+  borderColor: '#d1d5db',
+  borderRadius: 10,
+  paddingHorizontal: 12,
+  marginBottom: 10,
+  backgroundColor: '#f9fafb',
+  fontSize: 14,
+  color: '#1f2937',
+},
+
+// Texto do totalizador de itens
+totalItens: {
+  fontSize: 14,
+  color: '#374151',
+  fontWeight: '600',
+},
+
 
   // Área onde a FlatList fica posicionada
   listWrapper: {
@@ -609,8 +682,6 @@ formSubtitle: {
   listContent: {
     paddingBottom: 30,
   },
-
-  // ===== NOVO VISUAL: CARD DOS MATERIAIS =====
 
   // Card individual de cada material
   materialCard: {
