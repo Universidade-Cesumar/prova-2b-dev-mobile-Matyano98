@@ -317,12 +317,43 @@ const materiaisFiltrados = materiais.filter((material) =>
     .includes(busca.toLowerCase())
 );
 
- // Define como cada material será exibido na FlatList
+// Define o texto e o estilo visual de acordo com a quantidade em estoque
+function obterStatusEstoque(quantidade) {
+  const estoque = Number(quantidade);
+
+  if (estoque === 0) {
+    return {
+      label: 'Zerado',
+      badgeStyle: styles.quantidadeBadgeZerado,
+      labelStyle: styles.quantidadeBadgeLabelZerado,
+      valueStyle: styles.quantidadeBadgeValueZerado,
+    };
+  }
+
+  if (estoque <= 5) {
+    return {
+      label: 'Baixo',
+      badgeStyle: styles.quantidadeBadgeBaixo,
+      labelStyle: styles.quantidadeBadgeLabelBaixo,
+      valueStyle: styles.quantidadeBadgeValueBaixo,
+    };
+  }
+
+  return {
+    label: 'Estoque',
+    badgeStyle: styles.quantidadeBadge,
+    labelStyle: styles.quantidadeBadgeLabel,
+    valueStyle: styles.quantidadeBadgeValue,
+  };
+}
+
+// Define como cada material será exibido na FlatList
 function renderizarMaterial({ item }) {
+  // Busca o status visual do estoque do material
+  const statusEstoque = obterStatusEstoque(item.quantidade);
+
   return (
     <View style={styles.materialCard}>
-      {/* ===== NOVO CÓDIGO: CABEÇALHO DO CARD ===== */}
-
       <View style={styles.materialHeader}>
         <View style={styles.materialInfo}>
           <Text style={styles.materialNome}>
@@ -334,15 +365,34 @@ function renderizarMaterial({ item }) {
           </Text>
         </View>
 
-        <View style={styles.quantidadeBadge}>
-          <Text style={styles.quantidadeBadgeLabel}>
-            Estoque
+        {/* ===== NOVO CÓDIGO: BADGE COM STATUS DINÂMICO ===== */}
+
+        <View
+          style={[
+            styles.quantidadeBadge,
+            statusEstoque.badgeStyle,
+          ]}
+        >
+          <Text
+            style={[
+              styles.quantidadeBadgeLabel,
+              statusEstoque.labelStyle,
+            ]}
+          >
+            {statusEstoque.label}
           </Text>
 
-          <Text style={styles.quantidadeBadgeValue}>
+          <Text
+            style={[
+              styles.quantidadeBadgeValue,
+              statusEstoque.valueStyle,
+            ]}
+          >
             {item.quantidade}
           </Text>
         </View>
+
+        {/* ===== FIM DO NOVO CÓDIGO ===== */}
       </View>
 
       {/* Campo usado para informar quanto será retirado deste item */}
@@ -359,7 +409,8 @@ function renderizarMaterial({ item }) {
         }
         keyboardType="numeric"
       />
-       {/* Área dos botões de ação do material */}
+
+      {/* Área dos botões de ação do material */}
       <View style={styles.actionContainer}>
         {/* Botão obrigatório para confirmar a baixa de estoque */}
         <TouchableOpacity
@@ -756,6 +807,32 @@ quantidadeBadgeValue: {
   fontSize: 18,
   color: '#1e40af',
   fontWeight: 'bold',
+},
+
+// Badge amarelo para estoque baixo
+quantidadeBadgeBaixo: {
+  backgroundColor: '#fef3c7',
+},
+
+quantidadeBadgeLabelBaixo: {
+  color: '#92400e',
+},
+
+quantidadeBadgeValueBaixo: {
+  color: '#92400e',
+},
+
+// Badge vermelho para estoque zerado
+quantidadeBadgeZerado: {
+  backgroundColor: '#fee2e2',
+},
+
+quantidadeBadgeLabelZerado: {
+  color: '#991b1b',
+},
+
+quantidadeBadgeValueZerado: {
+  color: '#991b1b',
 },
 
 // Quantidade antiga mantida por segurança
